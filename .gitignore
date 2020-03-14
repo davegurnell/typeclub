@@ -1,0 +1,42 @@
+
+# Created by https://www.gitignore.io/api/scala,sbt,idea,visualstudiocode,metals,bloop
+# Edit at https://www.gitignore.io/?templates=scala,sbt,idea,visualstudiocode,metals,bloop
+
+### Bloop ###
+.bloop/
+
+#!! ERROR: idea is undefined. Use list command to see defined gitignore types !!#
+
+### Metals ###
+.metals/
+
+### SBT ###
+# Simple Build Tool
+# http://www.scala-sbt.org/release/docs/Getting-Started/Directories.html#configuring-version-control
+
+dist/*
+target/
+lib_managed/
+src_managed/
+project/boot/
+project/plugins/project/
+.history
+.cache
+.lib/
+
+### Scala ###
+*.class
+*.log
+*.metals
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+
+# End of https://www.gitignore.io/api/scala,sbt,idea,visualstudiocode,metals,bloop
