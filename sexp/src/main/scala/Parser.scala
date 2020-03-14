@@ -29,19 +29,19 @@ object Parser {
 trait AllParsers {
   import SExp._
 
-  def whitespace[_: P]: P[Unit] =
+  def ws1[_: P]: P[Unit] =
     P(CharPred(_.isWhitespace))
 
   def paren[_: P]: P[Unit] =
     P(CharIn("()"))
 
   def identBreak[_: P]: P[Unit] =
-    P(whitespace | paren)
+    P(ws1 | paren)
 
   // Whitespace
 
   def ws[_: P]: P[Unit] =
-    P(whitespace.rep)
+    P(ws1.rep)
 
   // Atoms
 
@@ -89,7 +89,7 @@ trait AllParsers {
   }
 
   def bool[_: P]: P[SExp] =
-    P(("true" | "false").! ~ &(whitespace | paren | End)).map {
+    P(("true" | "false").! ~ &(ws1 | paren | End)).map {
       case "true"  => Bool(true)
       case "false" => Bool(false)
     }
