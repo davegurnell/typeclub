@@ -32,12 +32,6 @@ trait AllParsers {
   def whitespace[_: P]: P[Unit] =
     P(CharPred(_.isWhitespace))
 
-  // def alpha[_: P]: P[Unit] =
-  //   P(CharIn("_$", "a-z", "A-Z"))
-
-  def digit[_: P]: P[Unit] =
-    P(CharIn("0-9"))
-
   def paren[_: P]: P[Unit] =
     P(CharIn("()"))
 
@@ -73,9 +67,6 @@ trait AllParsers {
   }
 
   def str[_: P]: P[SExp] = {
-    def newline: P[Unit] =
-      P("\n" | "\r\n" | "\r" | "\f")
-
     def escape: P[Unit] =
       P("\\" ~ AnyChar)
 
