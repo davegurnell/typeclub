@@ -6,10 +6,16 @@ import fastparse.NoWhitespace._
 object Parser {
   object parsers extends AllParsers
 
-  def apply(code: String): Either[ParseError, SExp] =
-    parse(code, parsers.sexpToEnd(_))
+  def unsafeParse(code: String): SExp =
+    parse(code) match {
+      case Right(sexp) => sexp
+      case Left(error) => throw new Exception(error.toString)
+    }
 
-  private def parse[A](code: String, parser: P[_] => P[A]): Either[ParseError, A] =
+  def parse(code: String): Either[ParseError, SExp] =
+    parseWith(code, parsers.sexpToEnd(_))
+
+  private def parseWith[A](code: String, parser: P[_] => P[A]): Either[ParseError, A] =
     fastparse.parse(code, parser) match {
       case failure: Parsed.Failure =>
         Left(ParseError(failure.msg))

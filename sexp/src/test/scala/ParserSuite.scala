@@ -1,5 +1,6 @@
 package typeclub.sexp
 
+import syntax._
 import minitest._
 
 object ParserSuite extends SimpleTestSuite {
@@ -7,111 +8,109 @@ object ParserSuite extends SimpleTestSuite {
 
   test("boolean") {
     assertEquals(
-      Parser("true"),
-      Right(Bool(true))
+      sexp"true",
+      Bool(true)
     )
     assertEquals(
-      Parser("false"),
-      Right(Bool(false))
+      sexp"false",
+      Bool(false)
     )
   }
 
   test("number") {
     assertEquals(
-      Parser("123"),
-      Right(Num(123))
+      sexp"123",
+      Num(123)
     )
     assertEquals(
-      Parser("123.456"),
-      Right(Num(123.456))
+      sexp"123.456",
+      Num(123.456)
     )
     assertEquals(
-      Parser(".456"),
-      Right(Num(.456))
+      sexp".456",
+      Num(.456)
     )
     assertEquals(
-      Parser("123E4"),
-      Right(Num(1230000))
+      sexp"123E4",
+      Num(1230000)
     )
     assertEquals(
-      Parser("123.456E4"),
-      Right(Num(1234560))
+      sexp"123.456E4",
+      Num(1234560)
     )
   }
 
   test("string") {
     assertEquals(
-      Parser("'hello'"),
-      Right(Str("hello"))
+      sexp"'hello'",
+      Str("hello")
     )
     assertEquals(
-      Parser("\"hello\""),
-      Right(Str("hello"))
+      sexp""""hello"""",
+      Str("hello")
     )
     assertEquals(
-      Parser("'123'"),
-      Right(Str("123"))
+      sexp"'123'",
+      Str("123")
     )
     assertEquals(
-      Parser("\"true\""),
-      Right(Str("true"))
+      sexp""""true"""",
+      Str("true")
     )
     assertEquals(
-      Parser(""" "His name is 'Taco'" """),
-      Right(Str("""His name is 'Taco'"""))
+      sexp""" "His name is 'Taco'" """,
+      Str("""His name is 'Taco'""")
     )
     assertEquals(
-      Parser(""" 'His name is "Taco"' """),
-      Right(Str("""His name is "Taco""""))
+      sexp""" 'His name is "Taco"' """,
+      Str("""His name is "Taco"""")
     )
     assertEquals(
-      Parser(""" "His name is \"Taco\"" """),
-      Right(Str("""His name is "Taco""""))
+      sexp""" "His name is \"Taco\"" """,
+      Str("""His name is "Taco"""")
     )
     assertEquals(
-      Parser(""" 'His name is \'Taco\'' """),
-      Right(Str("""His name is 'Taco'"""))
+      sexp""" 'His name is \'Taco\'' """,
+      Str("""His name is 'Taco'""")
     )
   }
 
   test("symbol") {
     assertEquals(
-      Parser("hello"),
-      Right(Sym("hello"))
+      sexp"hello",
+      Sym("hello")
     )
     assertEquals(
-      Parser("true1"),
-      Right(Sym("true1"))
+      sexp"true1",
+      Sym("true1")
     )
     assertEquals(
-      Parser("false1"),
-      Right(Sym("false1"))
+      sexp"false1",
+      Sym("false1")
     )
   }
 
   test("expr") {
     assertEquals(
-      Parser("(+ 1 2)"),
-      Right(Expr(List(Sym("+"), Num(1), Num(2))))
+      sexp"(+ 1 2)",
+      Expr(List(Sym("+"), Num(1), Num(2)))
     )
     assertEquals(
-      Parser("(def (square x) (* x x))"),
-      Right(
-        Expr(
-          List(
-            Sym("def"),
-            Expr(
-              List(
-                Sym("square"),
-                Sym("x")
-              )
-            ),
-            Expr(
-              List(
-                Sym("*"),
-                Sym("x"),
-                Sym("x")
-              )
+      sexp"(def (square x) (* x x))",
+      Expr(
+        List(
+          Sym("def"),
+          Expr(
+            List(
+              Sym("square"),
+              Sym("x")
+            )
+          ),
+          Expr(
+            List(
+              Sym("*"),
+              Sym("x"),
+              Sym("x")
             )
           )
         )
