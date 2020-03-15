@@ -1,18 +1,18 @@
-package typeclub.sexp
+package typeclub
 
-import fastparse._
 import fastparse.NoWhitespace._
+import fastparse._
 
 object Parser {
   object parsers extends AllParsers
 
-  def unsafeParse(code: String): SExp =
+  def unsafeParse(code: String): Expr =
     parse(code) match {
       case Right(sexp) => sexp
       case Left(error) => throw new Exception(error.toString)
     }
 
-  def parse(code: String): Either[ParseError, SExp] =
+  def parse(code: String): Either[ParseError, Expr] =
     parseWith(code, parsers.sexpToEnd(_))
 
   private def parseWith[A](code: String, parser: P[_] => P[A]): Either[ParseError, A] =
@@ -27,16 +27,16 @@ object Parser {
 
 //noinspection ForwardReference,ScalaUnusedSymbol
 trait AllParsers {
-  import SExp._
+  import Expr._
 
   def ws1[_: P]: P[Unit] =
     P(CharPred(_.isWhitespace))
 
-  def paren[_: P]: P[Unit] =
-    P(CharIn("()"))
+  def anyParen[_: P]: P[Unit] =
+    P(CharIn("()[]{}"))
 
   def identBreak[_: P]: P[Unit] =
-    P(ws1 | paren)
+    P(ws1 | anyParen)
 
   // Whitespace
 
@@ -45,7 +45,7 @@ trait AllParsers {
 
   // Atoms
 
-  def num[_: P]: P[SExp] = {
+  def num[_: P]: P[Expr] = {
     def sign: P[Unit] =
       P("+" | "-")
 
@@ -66,7 +66,7 @@ trait AllParsers {
     ).!.map(BigDecimal(_)).map(Num)
   }
 
-  def str[_: P]: P[SExp] = {
+  def str[_: P]: P[Expr] = {
     def escape: P[Unit] =
       P("\\" ~ AnyChar)
 
@@ -88,28 +88,32 @@ trait AllParsers {
     P(doubleQuoted | singleQuoted).map(Str)
   }
 
-  def bool[_: P]: P[SExp] =
-    P(("true" | "false").! ~ &(ws1 | paren | End)).map {
+  def bool[_: P]: P[Expr] =
+    P(("true" | "false").! ~ &(ws1 | anyParen | End)).map {
       case "true"  => Bool(true)
       case "false" => Bool(false)
     }
 
-  def sym[_: P]: P[SExp] =
-    P(CharsWhile(c => !c.isWhitespace && c != '(' && c != ')').!).map(Sym(_))
+  def sym[_: P]: P[Expr] =
+    P(CharsWhile(c => !c.isWhitespace && !"()[]{}".contains(c)).!).map(Sym)
 
-  def atom[_: P]: P[SExp] =
+  def atom[_: P]: P[Expr] =
     P(num | str | bool | sym)
 
   // Compound:
 
-  def expr[_: P]: P[SExp] =
-    P("(" ~ ws ~ sexp.rep(sep = ws).map(_.toList).map(Expr(_)) ~ ws ~ ")")
+  def paren[_: P]: P[Expr] = {
+    def parenWith(open: String, close: String): P[Expr] =
+      P("(" ~ ws ~ sexp.rep(sep = ws).map(_.toList).map(Paren) ~ ws ~ ")")
+
+    P(parenWith("(", ")") | parenWith("[", "]") | parenWith("{", "}"))
+  }
 
   // Complete SExps:
 
-  def sexp[_: P]: P[SExp] =
-    P(atom | expr)
+  def sexp[_: P]: P[Expr] =
+    P(atom | paren)
 
-  def sexpToEnd[_: P]: P[SExp] =
+  def sexpToEnd[_: P]: P[Expr] =
     P(ws ~ sexp ~ ws ~ End)
 }
