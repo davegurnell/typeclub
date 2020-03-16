@@ -65,8 +65,10 @@ object InterpreterInternal {
       } yield b
 
     op match {
-      case "neg" => evalTyped[BigDecimal, BigDecimal](a, env)(-_)
-      case "not" => evalTyped[Boolean, Boolean](a, env)(!_)
+      case "neg"   => evalTyped[BigDecimal, BigDecimal](a, env)(-_)
+      case "not"   => evalTyped[Boolean, Boolean](a, env)(!_)
+      case "upper" => evalTyped[String, String](a, env)(_.toUpperCase)
+      case "lower" => evalTyped[String, String](a, env)(_.toLowerCase)
     }
   }
 
@@ -79,18 +81,19 @@ object InterpreterInternal {
       } yield r
 
     op match {
-      case "+"   => evalTyped[BigDecimal, BigDecimal, BigDecimal](a, b, env)(_ + _)
-      case "-"   => evalTyped[BigDecimal, BigDecimal, BigDecimal](a, b, env)(_ - _)
-      case "*"   => evalTyped[BigDecimal, BigDecimal, BigDecimal](a, b, env)(_ * _)
-      case "/"   => evalTyped[BigDecimal, BigDecimal, BigDecimal](a, b, env)(_ / _)
-      case "="   => evalTyped[BigDecimal, BigDecimal, Boolean](a, b, env)(_ == _)
-      case "!="  => evalTyped[BigDecimal, BigDecimal, Boolean](a, b, env)(_ != _)
-      case ">"   => evalTyped[BigDecimal, BigDecimal, Boolean](a, b, env)(_ > _)
-      case "<"   => evalTyped[BigDecimal, BigDecimal, Boolean](a, b, env)(_ < _)
-      case ">="  => evalTyped[BigDecimal, BigDecimal, Boolean](a, b, env)(_ >= _)
-      case "<="  => evalTyped[BigDecimal, BigDecimal, Boolean](a, b, env)(_ <= _)
-      case "and" => evalTyped[Boolean, Boolean, Boolean](a, b, env)(_ && _)
-      case "or"  => evalTyped[Boolean, Boolean, Boolean](a, b, env)(_ || _)
+      case "+"      => evalTyped[BigDecimal, BigDecimal, BigDecimal](a, b, env)(_ + _)
+      case "-"      => evalTyped[BigDecimal, BigDecimal, BigDecimal](a, b, env)(_ - _)
+      case "*"      => evalTyped[BigDecimal, BigDecimal, BigDecimal](a, b, env)(_ * _)
+      case "/"      => evalTyped[BigDecimal, BigDecimal, BigDecimal](a, b, env)(_ / _)
+      case "="      => evalTyped[BigDecimal, BigDecimal, Boolean](a, b, env)(_ == _)
+      case "!="     => evalTyped[BigDecimal, BigDecimal, Boolean](a, b, env)(_ != _)
+      case ">"      => evalTyped[BigDecimal, BigDecimal, Boolean](a, b, env)(_ > _)
+      case "<"      => evalTyped[BigDecimal, BigDecimal, Boolean](a, b, env)(_ < _)
+      case ">="     => evalTyped[BigDecimal, BigDecimal, Boolean](a, b, env)(_ >= _)
+      case "<="     => evalTyped[BigDecimal, BigDecimal, Boolean](a, b, env)(_ <= _)
+      case "and"    => evalTyped[Boolean, Boolean, Boolean](a, b, env)(_ && _)
+      case "or"     => evalTyped[Boolean, Boolean, Boolean](a, b, env)(_ || _)
+      case "concat" => evalTyped[String, String, String](a, b, env)(_ + _)
     }
   }
 

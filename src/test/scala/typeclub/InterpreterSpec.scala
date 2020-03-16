@@ -21,6 +21,8 @@ class InterpreterSpec extends AnyFreeSpec with Matchers {
   "unary" in {
     eval(expr"(neg 1)") shouldBe Right(Value.Num(-1))
     eval(expr"(not true)") shouldBe Right(Value.Bool(false))
+    eval(expr"(upper 'Hello')") shouldBe Right(Value.Str("HELLO"))
+    eval(expr"(lower 'Hello')") shouldBe Right(Value.Str("hello"))
   }
 
   "binary" in {
@@ -40,5 +42,6 @@ class InterpreterSpec extends AnyFreeSpec with Matchers {
     eval(expr"(and true true)") shouldBe Right(Value.Bool(true))
     eval(expr"(or true false)") shouldBe Right(Value.Bool(true))
     eval(expr"(or false false)") shouldBe Right(Value.Bool(false))
+    eval(expr"(concat 'hello' 'world')") shouldBe Right(Value.Str("helloworld"))
   }
 }
