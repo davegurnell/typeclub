@@ -1,5 +1,6 @@
 package typeclub
 
+/** Type class for converting instances of `Value` to Scala values. */
 trait ValueDecoder[A] {
   def decode(value: Value): Either[RuntimeError, A]
 }

@@ -1,5 +1,6 @@
 package typeclub
 
+/** Runtime value returned by evaluating an s-expression. */
 sealed abstract class Value extends Product with Serializable
 
 object Value {

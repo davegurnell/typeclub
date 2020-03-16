@@ -1,14 +1,14 @@
 package typeclub
 
-object SExpMatchers {
-
+/** Extractor patterns to simplify matching on s-expressions. */
+object ExprMatchers {
   import Expr._
 
   object App1 {
     def unapply(sexp: Expr): Option[(String, Expr)] =
       sexp match {
         case Paren(List(Sym(name), a)) => Some((name, a))
-        case _ => None
+        case _                         => None
       }
   }
 
@@ -16,7 +16,7 @@ object SExpMatchers {
     def unapply(sexp: Expr): Option[(String, Expr, Expr)] =
       sexp match {
         case Paren(List(Sym(name), a, b)) => Some((name, a, b))
-        case _ => None
+        case _                            => None
       }
   }
 
@@ -24,8 +24,7 @@ object SExpMatchers {
     def unapply(sexp: Expr): Option[(String, Expr, Expr, Expr)] =
       sexp match {
         case Paren(List(Sym(name), a, b, c)) => Some((name, a, b, c))
-        case _ => None
+        case _                               => None
       }
   }
-
 }

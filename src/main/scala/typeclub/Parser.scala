@@ -3,6 +3,7 @@ package typeclub
 import fastparse.NoWhitespace._
 import fastparse._
 
+/** S-expression parser. */
 object Parser {
   object parsers extends AllParsers
 
@@ -25,7 +26,6 @@ object Parser {
     }
 }
 
-//noinspection ForwardReference,ScalaUnusedSymbol
 trait AllParsers {
   import Expr._
 
@@ -104,16 +104,16 @@ trait AllParsers {
 
   def paren[_: P]: P[Expr] = {
     def parenWith(open: String, close: String): P[Expr] =
-      P("(" ~ ws ~ sexp.rep(sep = ws).map(_.toList).map(Paren) ~ ws ~ ")")
+      P("(" ~ ws ~ expr.rep(sep = ws).map(_.toList).map(Paren) ~ ws ~ ")")
 
     P(parenWith("(", ")") | parenWith("[", "]") | parenWith("{", "}"))
   }
 
-  // Complete SExps:
+  // Complete expressions:
 
-  def sexp[_: P]: P[Expr] =
+  def expr[_: P]: P[Expr] =
     P(atom | paren)
 
   def sexpToEnd[_: P]: P[Expr] =
-    P(ws ~ sexp ~ ws ~ End)
+    P(ws ~ expr ~ ws ~ End)
 }

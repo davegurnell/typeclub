@@ -1,5 +1,6 @@
 package typeclub
 
+/** An interpreter that evaluates s-expressions within an environment of variable bindings. */
 object Interpreter {
   def evalAs[A: ValueDecoder](sexp: Expr, env: Env = EnvF()): Either[RuntimeError, A] =
     // We push a stack frame on the env before we start
@@ -14,7 +15,7 @@ object Interpreter {
 
 object InterpreterInternal {
   import Expr._
-  import SExpMatchers._
+  import ExprMatchers._
 
   def evalAs[A: ValueDecoder](sexp: Expr, env: Env): Either[RuntimeError, A] =
     eval(sexp, env).flatMap(ValueDecoder[A].decode)

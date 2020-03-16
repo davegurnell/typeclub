@@ -1,11 +1,16 @@
 package typeclub
 
+/** An "execution environment" containing variable bindings.
+  * The type parameter should allow re-use for variables and types.
+  * Essentially a chain of nested scopes.
+  * See also type aliases in the package object.
+  */
 final case class EnvF[V](scopes: List[ScopeF[V]] = Nil) {
   def get(id: String): Option[V] = {
     def loop(scopes: List[ScopeF[V]]): Option[V] =
       scopes match {
         case head :: tail => head.get(id).orElse(loop(tail))
-        case Nil => None
+        case Nil          => None
       }
 
     loop(scopes)

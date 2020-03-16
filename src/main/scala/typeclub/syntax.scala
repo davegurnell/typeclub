@@ -1,11 +1,18 @@
 package typeclub
 
 object syntax {
-  implicit class SExpStringOps(val sc: StringContext) extends AnyVal {
-    def sexp(args: Any*): Expr =
+
+  /** String interpolator syntax for s-expressions. Enables code like:
+    *
+    * ```scala
+    * expr"(+ 1 1)"
+    * ```
+    */
+  implicit class ParserOps(val sc: StringContext) extends AnyVal {
+    def expr(args: Any*): Expr =
       Parser.unsafeParse(code(sc, args))
 
-    def sexpe(args: Any*): Either[ParseError, Expr] =
+    def expre(args: Any*): Either[ParseError, Expr] =
       Parser.parse(code(sc, args))
 
     // This is very dumb. We just toString all the args and
@@ -17,4 +24,5 @@ object syntax {
         .mkString
     }
   }
+
 }

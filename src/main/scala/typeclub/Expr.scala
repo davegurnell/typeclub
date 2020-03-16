@@ -1,5 +1,6 @@
 package typeclub
 
+/** S-expression. Originally named SExp but that's curiously hard to type. */
 sealed abstract class Expr extends Product with Serializable
 
 object Expr {
