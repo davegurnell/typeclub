@@ -18,10 +18,10 @@ object ValueDecoder {
       case value         => Left(RuntimeError.TypeError(value, "boolean"))
     }
 
-  implicit def intDecoder: ValueDecoder[Int] =
+  implicit def bigDecimalDecoder: ValueDecoder[BigDecimal] =
     instance {
       case Value.Num(v) => Right(v.toInt)
-      case value        => Left(RuntimeError.TypeError(value, "integer"))
+      case value        => Left(RuntimeError.TypeError(value, "number"))
     }
 
   implicit def stringDecoder: ValueDecoder[String] =
