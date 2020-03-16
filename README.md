@@ -23,3 +23,10 @@ Imagine the words "Static types for..." at the beginning of each list item:
 - [ ] Union types
 - [ ] Algebraic data types
 - [ ] Operator/function overloading
+
+# Reading list
+
+A couple of ideas:
+
+- https://www.cs.cornell.edu/courses/cs3110/2019sp/textbook/interp/intro.html
+- https://www.cs.cornell.edu/courses/cs4120/2020sp/
