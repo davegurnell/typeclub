@@ -15,18 +15,18 @@ object ValueDecoder {
   implicit def booleanDecoder: ValueDecoder[Boolean] =
     instance {
       case Value.Bool(v) => Right(v)
-      case value         => Left(RuntimeError.DecoderError(value, "boolean"))
+      case value         => Left(RuntimeError.TypeError(value, "boolean"))
     }
 
   implicit def intDecoder: ValueDecoder[Int] =
     instance {
       case Value.Num(v) => Right(v.toInt)
-      case value        => Left(RuntimeError.DecoderError(value, "integer"))
+      case value        => Left(RuntimeError.TypeError(value, "integer"))
     }
 
   implicit def stringDecoder: ValueDecoder[String] =
     instance {
       case Value.Str(v) => Right(v)
-      case value        => Left(RuntimeError.DecoderError(value, "string"))
+      case value        => Left(RuntimeError.TypeError(value, "string"))
     }
 }
